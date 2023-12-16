@@ -1,0 +1,127 @@
+﻿#EXTM3U
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/5/57/Ekattor_TV_logo.svg/190px-Ekattor_TV_logo.svg.png"group-title="Bangla",Ekattor TV
+http://tv.elaach.com/hls/71.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/4/4f/Txphd_logo_2015.png"group-title="Bangla",Travelxp
+http://tv.elaach.com/hls/travelxp.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/2/20/GTVBangladeshLogo.png"group-title="Bangla",GTV
+http://tv.elaach.com/hls/Gazi-TV.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/d/d4/Sony_Aath_new.png/180px-Sony_Aath_new.png"group-title="Bangla",Sony Aath
+http://tv.elaach.com/hls/Sony_Aath.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/c/c1/Independent_Television_Logo.svg/220px-Independent_Television_Logo.svg.png"group-title="Bangla",Independent Television
+http://tv.elaach.com/hls/indepen.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/d/d7/Duronto_TV_Logo.png"group-title="Bangla",Duronto TV
+http://tv.elaach.com/hls/d.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/e/ea/Enterr10_Bangla.jpeg/200px-Enterr10_Bangla.jpeg"group-title="Bangla",Enterr10 Bangla
+http://tv.elaach.com/hls/enterr10.m3u8
+#EXTINF:-1 tvg-logo="https://sangeetbangla.mwpsites-a.net/wp-content/uploads/2017/05/sangeet-bangla-logo-small.png"group-title="Bangla",Sangeet Bangla
+http://tv.elaach.com/hls/sangeetbangla.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Star_Jalsha_logo_2023.png/250px-Star_Jalsha_logo_2023.png"group-title="Bangla",Star Jalsha
+http://tv.elaach.com/hls/starjalsha.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/5/5f/Zee_Bangla_logo.png/250px-Zee_Bangla_logo.png"group-title="Bangla",Zee Bangla
+http://tv.elaach.com/hls/zeebanglahd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/7/7b/Colors_Bangla.png/170px-Colors_Bangla.png"group-title="Bangla",Colors Bangla
+http://tv.elaach.com/hls/colorsbangla.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/d/d4/Jalsha_Movies.jpg"group-title="Bangla",Star Jalsha Movies
+http://tv.elaach.com/hls/jalshamovies.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/8/8c/Colors_Bangla_Cinema.png"group-title="Bangla",Colors Bangla Cinema
+http://tv.elaach.com/hls/colore-bangla-cinema.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/3/31/Zee_Bangla_Cinema.jpeg/200px-Zee_Bangla_Cinema.jpeg"group-title="Bangla",Zee Bangla Cinema
+http://tv.elaach.com/hls/zee-bangla-cinema.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/b/b3/Sun_Bangla.png/170px-Sun_Bangla.png"group-title="Bangla",Sun Bangla
+http://tv.elaach.com/hls/sunbangla.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/8/88/Channel-i.svg/192px-Channel-i.svg.png"group-title="Bangla",Channel i
+http://tv.elaach.com/hls/channeli.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/bn/thumb/f/f6/%E0%A6%B8%E0%A6%AE%E0%A6%AF%E0%A6%BC_%E0%A6%9F%E0%A6%BF%E0%A6%AD%E0%A6%BF%E0%A6%B0_%E0%A6%B2%E0%A7%8B%E0%A6%97%E0%A7%8B.svg/200px-%E0%A6%B8%E0%A6%AE%E0%A6%AF%E0%A6%BC_%E0%A6%9F%E0%A6%BF%E0%A6%AD%E0%A6%BF%E0%A6%B0_%E0%A6%B2%E0%A7%8B%E0%A6%97%E0%A7%8B.svg.png"group-title="Bangla",সময় টিভি
+http://tv.elaach.com/hls/somoy.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/3/39/Maasranga_Television_Logo.jpg/180px-Maasranga_Television_Logo.jpg"group-title="Bangla",Maasranga Television
+http://tv.elaach.com/hls/masranga.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/f/f4/Sony_Pix_new.png"group-title="English",Sony Pix
+http://tv.elaach.com/hls/sonypixhd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/4/49/Movies_Now_logo.png"group-title="English",Movies Now
+http://tv.elaach.com/hls/movies-now.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/STAR_Movies_logo.svg/536px-STAR_Movies_logo.svg.png"group-title="English",STAR Movies
+http://tv.elaach.com/hls/starmovies.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/4/44/BBC_Earth_logo.png"group-title="English",BBC Earth
+http://tv.elaach.com/hls/bbcearth.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/c/ce/Mn%2Blogo.jpeg"group-title="English",Mn+
+http://tv.elaach.com/hls/mn+.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/2018_Animal_Planet_logo.svg/1024px-2018_Animal_Planet_logo.svg.png"group-title="English",Animal Planet
+http://tv.elaach.com/hls/animalplanent.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/2/27/Discovery_Channel_-_Logo_2019.svg"group-title="English",Discovery Channel
+http://tv.elaach.com/hls/discovery.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/2/22/Nat_Geo_HD.png"group-title="English",Nat Geo HD
+http://tv.elaach.com/hls/ngohd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/a/a7/Wild_TV_logo_2020.png"group-title="English",Wild TV
+http://tv.elaach.com/hls/wild.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/9/90/STAR_World.svg/180px-STAR_World.svg.png"group-title="English",Star World
+http://tv.elaach.com/hls/star-worldhd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/c/ce/Mn%2Blogo.jpeg"group-title="English",Mn+ HD
+http://tv.elaach.com/hls/mnx-hd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/6/6c/BBC_World_News_red.svg"group-title="English",BBC World News
+http://tv.elaach.com/hls/bbcworld.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/2/2b/%26pictures.png"group-title="Hindi",And Pictures
+http://tv.elaach.com/hls/andpictures.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Colors_TV_logo.svg/924px-Colors_TV_logo.svg.png"group-title="Hindi",Colors Tv HD
+http://tv.elaach.com/hls/colore-tv-hd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/a/af/Zee_Cinema_logo.png"group-title="Hindi",Zee Ceneam HD
+http://tv.elaach.com/hls/zeecinemahd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/d/d7/StarPlus_Logo.png"group-title="Hindi",Star Plus HD
+http://tv.elaach.com/hls/starplus.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/1/13/Colors-cineplex.png"group-title="Hindi",Colors Cineplex HD
+http://tv.elaach.com/hls/colorscineplex.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/d/de/Sony_TV_new.png/150px-Sony_TV_new.png"group-title="Hindi",Sony Entertainment
+http://tv.elaach.com/hls/sonyen.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/b/b6/Sony_Max_new.png/150px-Sony_Max_new.png"group-title="Hindi",Sony Max HD
+http://tv.elaach.com/hls/sony-maxhd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d0/Zee_TV-2018.png/180px-Zee_TV-2018.png"group-title="Hindi",Zee Tv
+http://tv.elaach.com/hls/zeetv.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/e/ef/9XMHindiMusicTelevisionChannelLogo.jpg"group-title="Hindi",9xm
+http://tv.elaach.com/hls/9xm.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/6/6a/Sony_six_logo_460.jpg"group-title="Sports",Sony Six
+http://tv.elaach.com/hls/sonysix.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Star_Sports_Network.png/200px-Star_Sports_Network.png"group-title="Sports",Star Sports 3
+http://tv.elaach.com/hls/starsports3.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Star_Sports_Network.png/200px-Star_Sports_Network.png"group-title="Sports",Star Sports Select 1 HD
+http://tv.elaach.com/hls/Star_Sport_Select1HD.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Star_Sports_Network.png/200px-Star_Sports_Network.png"group-title="Sports",Star Sports 1 HD
+http://tv.elaach.com/hls/stersports1hd.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Star_Sports_Network.png/200px-Star_Sports_Network.png"group-title="Sports",Star Sports 2 HD
+http://tv.elaach.com/hls/starsports2.m3u8
+#EXTINF:-1 tvg-logo="https://www.sonypicturesnetworks.com/images/logos/SONY_SportsTen3_SD_Logo_CLR.png"group-title="Sports",Sony Ten 3
+http://tv.elaach.com/hls/sonyten3.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/Star_Sports_Network.png/200px-Star_Sports_Network.png"group-title="Sports",Star Sports Select 2 HD
+http://tv.elaach.com/hls/select2.m3u8
+#EXTINF:-1 tvg-logo="https://www.sonypicturesnetworks.com/images/logos/SONY_SportsTen2_SD_Logo_CLR.png"group-title="Sports",Sony Ten 2
+http://tv.elaach.com/hls/sonyten2.m3u8
+#EXTINF:-1 tvg-logo="https://www.sonypicturesnetworks.com/images/logos/SONY_SportsTen1_HD_Logo_CLR.png"group-title="Sports",Sony Ten 1
+http://tv.elaach.com/hls/sonyten1.m3u8
+#EXTINF:-1 tvg-logo="https://scontent.frjh4-1.fna.fbcdn.net/v/t39.30808-6/291685266_471574754970865_6374952514259708701_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=69tEsVXYRKwAX8i7h2Q&_nc_ht=scontent.frjh4-1.fna&oh=00_AfBfcclY4M8wOj9hm80SNJ13T3PtrUFPyqWsTFWK7kdi4g&oe=65809848"group-title="Sports",PTV
+http://tv.elaach.com/hls/ptv.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/0/07/Sports18_official_logo.png"group-title="Sports",Sports 18
+http://tv.elaach.com/hls/18.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/5/5a/Sony_YAY%21_logo_%282017-present%29.png"group-title="Kids",Sony Way
+http://tv.elaach.com/hls/sonyway.m3u8
+#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Nick_logo_2009.svg/512px-Nick_logo_2009.svg.png"group-title="Kids",Nick
+http://tv.elaach.com/hls/nick.m3u8
+#EXTINF:-1 tvg-logo="https://scontent.frjh4-1.fna.fbcdn.net/v/t39.30808-6/356862504_675501267940096_6459400862268167355_n.jpg?_nc_cat=1&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=3qMjZSleCHMAX9o_mtr&_nc_ht=scontent.frjh4-1.fna&oh=00_AfAIN6ZSHe54f3SVhVUQNJl0oFmPJ6ixXPz9gPW5r_wX6w&oe=6581CA46"group-title="Others",Madani
+http://tv.elaach.com/hls/madani.m3u8
+#EXTINF:-1 tvg-logo="https://scontent.frjh4-1.fna.fbcdn.net/v/t39.30808-6/293345373_362908795957916_7808672704798130214_n.png?_nc_cat=111&ccb=1-7&_nc_sid=efb6e6&_nc_ohc=H8BLiUgJ5lgAX8t6det&_nc_ht=scontent.frjh4-1.fna&oh=00_AfCpiPJ2tF_gMyYOIPFb6zENr-CvBwI9VLwq8xDaD0bw6A&oe=65821972"group-title="Others",QuranTV
+http://tv.elaach.com/hls/qurqntv.m3u8
+#EXTINF:-1 tvg-logo=""group-title="",
+
+#EXTINF:-1 tvg-logo=""group-title="",
+
+#EXTINF:-1 tvg-logo=""group-title="",
+
+#EXTINF:-1 tvg-logo=""group-title="",
+
+#EXTINF:-1 tvg-logo=""group-title="",
+
+#EXTINF:-1 tvg-logo=""group-title="",
+
+#EXTINF:-1 tvg-logo=""group-title="",
+
+#EXTINF:-1 tvg-logo=""group-title="",
+
+#EXTINF:-1 tvg-logo=""group-title="",
+
