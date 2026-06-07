@@ -2,8 +2,11 @@ name: Filter Adult Channels
 
 on:
   schedule:
-    - cron: "0 * * * *"   # every hour
+    - cron: '0 * * * *'   # Every hour
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   filter:
@@ -12,19 +15,35 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Run filter script
-        run: python filter_adult.py
-
-      - name: Commit changes if any
+      - name: Run adult filter
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
+          python filter_adult.py
+
+      - name: Show git status
+        run: |
+          echo "==== GIT STATUS ===="
+          git status
+          echo "==== OUTPUT FILE ===="
+          ls -lh output.m3u || true
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
           git add output.m3u
-          git diff --cached --quiet || git commit -m "Auto remove adult channels"
-          git push
+
+          if git diff --cached --quiet; then
+            echo "No changes detected."
+          else
+            git commit -m "Auto remove adult channels"
+            git push
+          fi
