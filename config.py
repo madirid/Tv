@@ -12,3 +12,20 @@ CARTOON_KEYWORDS = [
     "Cartoon Network","Nick","Nickelodeon","Disney",
     "Pogo","Hungama","BabyTV","Toon","CBeebies"
 ]
+ADULT_KEYWORDS = [
+    "adult",
+    "xxx",
+    "sex",
+    "porn",
+    "private",
+    "dorcel",
+    "penthouse",
+    "playboy",
+    "hustler",
+    "boyxx",
+    "sextreme",
+    "redlight",
+    "babes",
+    "erotic",
+    "18+"
+]
