@@ -38,6 +38,14 @@ def parse_m3u(text):
 
     return out
 
+def is_adult(name):
+    low = name.lower()
+
+    return any(
+        keyword.lower() in low
+        for keyword in ADULT_KEYWORDS
+    )
+
 
 def main():
     with open("sources.txt") as f:
