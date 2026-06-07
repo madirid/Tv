@@ -38,12 +38,12 @@ def parse_m3u(text):
 
     return out
 
-def is_adult(name):
-    low = name.lower()
+def is_adult(channel_info):
+    text = channel_info.lower()
 
     return any(
-        keyword.lower() in low
-        for keyword in ADULT_KEYWORDS
+        word.lower() in text
+        for word in ADULT_KEYWORDS
     )
 
 
