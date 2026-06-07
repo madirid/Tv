@@ -1,5 +1,5 @@
 import requests
-from config import BD_KEYWORDS, INDIA_KEYWORDS, CARTOON_KEYWORDS
+from config import BD_KEYWORDS, INDIA_KEYWORDS, CARTOON_KEYWORDS, ADULT_KEYWORDS
 from logos import LOGO_DB, DEFAULT_LOGO
 from utils import ffmpeg_check, clean_name
 
@@ -38,6 +38,7 @@ def parse_m3u(text):
 
     return out
 
+
 def is_adult(channel_info):
     text = channel_info.lower()
 
@@ -54,6 +55,7 @@ def main():
     bd, ct, ind, oth = [], [], [], []
 
     total = 0
+    skipped = 0
 
     for s in sources:
         try:
@@ -65,6 +67,11 @@ def main():
         total += len(channels)
 
         for name, url in channels:
+            # Skip adult channels — check both the EXTINF line and the URL
+            if is_adult(name) or is_adult(url):
+                skipped += 1
+                continue
+
             cat = detect(name)
             logo = get_logo(name)
             short = clean_name(name)
@@ -91,6 +98,7 @@ def main():
 
     with open("stats.txt", "w") as f:
         f.write(f"Total: {total}\n")
+        f.write(f"Skipped (adult): {skipped}\n")
         f.write(f"Final: {len(final)}\n")
         f.write(f"BD: {len(bd)} | Cartoon: {len(ct)} | India: {len(ind)} | Other: {len(oth)}\n")
 
