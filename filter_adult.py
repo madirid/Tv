@@ -1,6 +1,7 @@
 import os
 
-FILE = "output.m3u"
+SOURCE_FILE = "output.m3u"
+OUTPUT_FILE = "ridoyiptv.m3u"
 
 ADULT_KEYWORDS = [
     "adult", "xxx", "porn", "sex", "erotic", "erotik", "erotique",
@@ -14,56 +15,52 @@ ADULT_KEYWORDS = [
     "for adults", "adults only", "hot movies", "private"
 ]
 
-def is_adult(text: str) -> bool:
+def is_adult(text):
     text = text.lower()
     return any(keyword in text for keyword in ADULT_KEYWORDS)
 
-def filter_m3u(lines):
+def main():
+    if not os.path.exists(SOURCE_FILE):
+        print(f"{SOURCE_FILE} not found")
+        return
+
+    with open(SOURCE_FILE, "r", encoding="utf-8", errors="ignore") as f:
+        lines = f.readlines()
+
     cleaned = []
+    removed = 0
     i = 0
 
     while i < len(lines):
-        line = lines[i].strip()
+        line = lines[i]
 
-        # Only process EXTINF blocks
         if line.startswith("#EXTINF"):
-            if is_adult(line):
-                # skip this EXTINF + next URL line
-                i += 2
-                continue
-            else:
-                cleaned.append(lines[i])
+            block_text = line.lower()
 
-                # keep next line if it's URL
-                if i + 1 < len(lines):
-                    cleaned.append(lines[i + 1])
+            if i + 1 < len(lines):
+                block_text += lines[i + 1].lower()
+
+            if is_adult(block_text):
+                removed += 1
                 i += 2
                 continue
 
-        # keep everything else (headers like #EXTM3U)
-        cleaned.append(lines[i])
+            cleaned.append(line)
+
+            if i + 1 < len(lines):
+                cleaned.append(lines[i + 1])
+
+            i += 2
+            continue
+
+        cleaned.append(line)
         i += 1
 
-    return cleaned
+    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
+        f.writelines(cleaned)
 
-def main():
-    if not os.path.exists(FILE):
-        print("❌ output.m3u not found")
-        return
-
-    with open(FILE, "r", encoding="utf-8", errors="ignore") as f:
-        lines = f.readlines()
-
-    new_data = filter_m3u(lines)
-
-    if new_data == lines:
-        print("✅ No adult channels found. No changes made.")
-        return
-
-    with open(FILE, "w", encoding="utf-8") as f:
-        f.writelines(new_data)
-
-    print("✅ Adult channels removed successfully and file updated.")
+    print(f"Removed channels: {removed}")
+    print(f"Saved cleaned playlist to {OUTPUT_FILE}")
 
 if __name__ == "__main__":
     main()
