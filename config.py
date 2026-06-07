@@ -35,24 +35,6 @@ MUSIC_KEYWORDS = [
     "Hits","Beats","Radio"
 ]
 
-# ── Adult keywords — checked against FULL EXTINF line + URL ──────────────────
-# Covers display names, group-title, tvg-name, tvg-id, and URLs
-ADULT_KEYWORDS = [
-    # Direct terms
-    "adult", "xxx", "porn", "sex", "erotic", "erotik", "erotique",
-    # Sites / brands
-    "dorcel", "penthouse", "playboy", "hustler", "brazzers",
-    "bangbros", "mofos", "wankz", "vixen", "blacked",
-    "realitykings", "reality kings", "naughtyamerica", "naughty america",
-    "xvideos", "xhamster", "pornhub", "onlyfans", "boyxx", "sextreme",
-    # Content descriptors
-    "hentai", "nude", "naked", "milf", "fetish",
-    "hardcore", "softcore", "explicit", "uncensored",
-    "redlight", "red light", "taboo", "18+",
-    # Group titles commonly used
-    "for adults", "adults only", "hot movies", "private",
-]
-
 # Output category display names & order
 CATEGORY_ORDER = ["bd","india","cartoon","news","sports","movies","music","other"]
 
