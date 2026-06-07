@@ -1,0 +1,30 @@
+name: Filter Adult Channels
+
+on:
+  schedule:
+    - cron: "0 * * * *"   # every hour
+  workflow_dispatch:
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run filter script
+        run: python filter_adult.py
+
+      - name: Commit changes if any
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add output.m3u
+          git diff --cached --quiet || git commit -m "Auto remove adult channels"
+          git push
