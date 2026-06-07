@@ -1,72 +1,69 @@
 import os
 
-INPUT_FILE = "output.m3u"
-OUTPUT_FILE = "output.m3u"
+FILE = "output.m3u"
 
 ADULT_KEYWORDS = [
-    # Direct terms
     "adult", "xxx", "porn", "sex", "erotic", "erotik", "erotique",
-    # Sites / brands
     "dorcel", "penthouse", "playboy", "hustler", "brazzers",
     "bangbros", "mofos", "wankz", "vixen", "blacked",
     "realitykings", "reality kings", "naughtyamerica", "naughty america",
     "xvideos", "xhamster", "pornhub", "onlyfans", "boyxx", "sextreme",
-    # Content descriptors
     "hentai", "nude", "naked", "milf", "fetish",
     "hardcore", "softcore", "explicit", "uncensored",
     "redlight", "red light", "taboo", "18+",
-    # Group titles commonly used
-    "for adults", "adults only", "hot movies", "private",
+    "for adults", "adults only", "hot movies", "private"
 ]
 
 def is_adult(text: str) -> bool:
-    text_lower = text.lower()
-    return any(keyword in text_lower for keyword in ADULT_KEYWORDS)
+    text = text.lower()
+    return any(keyword in text for keyword in ADULT_KEYWORDS)
 
 def filter_m3u(lines):
-    filtered = []
-    skip_next = False
+    cleaned = []
+    i = 0
 
-    for i, line in enumerate(lines):
-        line = line.strip()
+    while i < len(lines):
+        line = lines[i].strip()
 
-        # Skip URL line if previous EXTINF was adult
-        if skip_next:
-            skip_next = False
-            if line.startswith("http"):
-                continue
-
+        # Only process EXTINF blocks
         if line.startswith("#EXTINF"):
             if is_adult(line):
-                skip_next = True
+                # skip this EXTINF + next URL line
+                i += 2
+                continue
+            else:
+                cleaned.append(lines[i])
+
+                # keep next line if it's URL
+                if i + 1 < len(lines):
+                    cleaned.append(lines[i + 1])
+                i += 2
                 continue
 
-        # also block direct URL if needed (rare case)
-        if is_adult(line):
-            continue
+        # keep everything else (headers like #EXTM3U)
+        cleaned.append(lines[i])
+        i += 1
 
-        filtered.append(lines[i])
-
-    return filtered
+    return cleaned
 
 def main():
-    if not os.path.exists(INPUT_FILE):
-        print("output.m3u not found!")
+    if not os.path.exists(FILE):
+        print("❌ output.m3u not found")
         return
 
-    with open(INPUT_FILE, "r", encoding="utf-8", errors="ignore") as f:
+    with open(FILE, "r", encoding="utf-8", errors="ignore") as f:
         lines = f.readlines()
 
-    new_lines = filter_m3u(lines)
+    new_data = filter_m3u(lines)
 
-    if lines == new_lines:
-        print("No changes needed. File already clean.")
+    if new_data == lines:
+        print("✅ No adult channels found. No changes made.")
         return
 
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as f:
-        f.writelines(new_lines)
+    with open(FILE, "w", encoding="utf-8") as f:
+        f.writelines(new_data)
 
-    print("Adult channels removed and output.m3u updated.")
+    print("✅ Adult channels removed successfully and file updated.")
 
 if __name__ == "__main__":
     main()
