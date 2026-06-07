@@ -1,13 +1,14 @@
-Total found    : 2681
-Adult skipped  : 10
-Duplicates     : 1523
-Valid channels : 1138
+Total raw      : 3597
+Adult removed  : 943
+HTTP dead      : 723
+Stream broken  : 1553
+Valid channels : 378
 --------------------------------
-  Bangladesh        : 91
-  India             : 104
-  Kids & Cartoon    : 54
-  News              : 108
-  Sports            : 67
-  Movies            : 38
-  Music             : 38
-  Other             : 638
+  Bangladesh        : 30
+  India             : 43
+  Kids & Cartoon    : 16
+  News              : 29
+  Sports            : 21
+  Movies            : 22
+  Music             : 8
+  Other             : 209
