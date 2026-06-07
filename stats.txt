@@ -1,3 +1,13 @@
-Total: 1353
-Final: 1353
-BD: 190 | Cartoon: 40 | India: 82 | Other: 1041
+Total found    : 2681
+Adult skipped  : 10
+Duplicates     : 1523
+Valid channels : 1138
+--------------------------------
+  Bangladesh        : 91
+  India             : 104
+  Kids & Cartoon    : 54
+  News              : 108
+  Sports            : 67
+  Movies            : 38
+  Music             : 38
+  Other             : 638
