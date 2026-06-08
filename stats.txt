@@ -1,14 +1,3 @@
-Total raw      : 3597
-Adult removed  : 943
-HTTP dead      : 723
-Stream broken  : 1553
-Valid channels : 378
---------------------------------
-  Bangladesh        : 30
-  India             : 43
-  Kids & Cartoon    : 16
-  News              : 29
-  Sports            : 21
-  Movies            : 22
-  Music             : 8
-  Other             : 209
+Total: 1345
+Final: 1345
+BD: 180 | Cartoon: 111 | India: 97 | Other: 957
