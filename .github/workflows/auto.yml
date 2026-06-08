@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Install FFmpeg
         run: sudo apt-get update && sudo apt-get install ffmpeg -y
@@ -26,17 +27,20 @@ jobs:
       - name: Install dependencies
         run: pip install requests
 
-      - name: Run IPTV Engine
+      - name: Run IPTV Processor
         run: python processor.py
+
+      - name: Run Adult Filter
+        run: python filter_adult.py
 
       - name: Commit output
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-          git add output.m3u stats.txt
+          git add output.m3u stats.txt ridoyiptv.m3u
 
           git diff --cached --quiet || (
-            git commit -m "PRO IPTV auto update"
+            git commit -m "Auto update: processed + filtered playlist"
             git push
           )
