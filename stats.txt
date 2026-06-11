@@ -1,3 +1,3 @@
-Total: 1089
-Final: 1089
-BD: 140 | Cartoon: 79 | India: 81 | Other: 789
+Total: 1069
+Final: 1069
+BD: 121 | Cartoon: 80 | India: 90 | Other: 778
