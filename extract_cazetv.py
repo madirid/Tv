@@ -29,7 +29,7 @@ MAX_RETRIES = 3
 
 # Country code to spoof if the stream is geo-locked
 # Common values: US, BR, GB, IN, FR, DE  — change to the country that CAN watch it
-GEO_COUNTRY = "US"
+GEO_COUNTRY = "BR"
 
 CHANNEL_LOGO = (
     "https://upload.wikimedia.org/wikipedia/commons/thumb/"
