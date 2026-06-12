@@ -30,6 +30,7 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install playwright playwright-stealth
+          pip install yt-dlp
 
       # ── 4. Install Chromium browser ─────────────────────────────────────
       - name: Install Playwright Chromium
