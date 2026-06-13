@@ -35,7 +35,7 @@ jobs:
           TARGET_URL: ${{ vars.TARGET_URL }}        # Set in repo → Settings → Variables
           STREAM_REFERER: ${{ vars.STREAM_REFERER }}
         run: |
-          python extract_stream.py
+          python extractstream.py
 
       - name: 📝 Commit & push updated playlist
         run: |
