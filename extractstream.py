@@ -183,12 +183,8 @@ def build_m3u(entries: list[dict]) -> str:
         name   = e.get("name",  "Channel")
         logo   = e.get("logo",  "")
         group  = e.get("group", "BD TV")
-        lines.append(
-            f'#EXTINF:-1'
-            f'{f" tvg-logo=\"{logo}\"" if logo else ""}'
-            f' group-title="{group}"'
-            f',{name}'
-        )
+        logo_attr = ' tvg-logo="' + logo + '"' if logo else ""
+        lines.append(f'#EXTINF:-1{logo_attr} group-title="{group}",{name}')
         lines.append(stream)
         lines.append("")
     return "\n".join(lines)
@@ -260,4 +256,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-  
+    
