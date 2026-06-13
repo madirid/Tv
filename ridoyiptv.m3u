@@ -1,7 +1,9 @@
 #EXTM3U
-#EXTINF:-1 tvg-logo="https://i.imgur.com/TVdefault.png",#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/PTV_Logo.png/250px-PTV_Logo.png" group-title="WorldCup",PTV World Cup
+#EXTINF:-1 tvg-logo="https://i.imgur.com/TVdefault.png",#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/0/0c/PTV_Logo.png/250px-PTV_Logo.png" group-title="FWC Special",PTV World Cup
 https://tvsen5.aynaott.com/PtvSports/index.m3u8
-#EXTINF:-1 tvg-logo="https://i.imgur.com/TVdefault.png",#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/6/64/Caz%C3%A9TV_logo.svg/250px-Caz%C3%A9TV_logo.svg.png" group-title="WorldCup",CazéTV World Cup
+#EXTINF:-1 tvg-logo="https://i.imgur.com/TVdefault.png",#EXTINF:-1 tvg-logo="https://tsportscdn.s3.ap-southeast-1.amazonaws.com/uploads/settings/logo.png" group-title="FWC Special",Tsports2HD
+https://live4.asimxtech.online/tsports2/index.m3u8
+#EXTINF:-1 tvg-logo="https://i.imgur.com/TVdefault.png",#EXTINF:-1 tvg-logo="https://upload.wikimedia.org/wikipedia/en/thumb/6/64/Caz%C3%A9TV_logo.svg/250px-Caz%C3%A9TV_logo.svg.png" group-title="FWC Special",CazéTV World Cup
 https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/1080p-vtt/index.m3u8
 #EXTINF:-1 tvg-logo="https://i.imgur.com/TVdefault.png",#EXTINF:-1 tvg-logo="https://pbs.twimg.com/profile_images/739539785304281088/zMwNO936_400x400.jpg" group-title="BANGLA",Deshe Bideshe
 https://dbcanada.sonarbanglatv.com/deshebideshe/dbtv/index.m3u8
