@@ -2,7 +2,7 @@
 IPTV Stream Extractor
 ======================
 Extracts HLS (.m3u8) stream URLs from a source webpage and writes
-a valid M3U playlist to playlist/fifa_tv.m3u.
+a valid M3U playlist to playlist/special.m3u.
 
 Configuration
 --------------
@@ -47,10 +47,9 @@ log = logging.getLogger(__name__)
 
 CHANNELS = [
     {
-        "name": "FIFA TV",
-        "url": os.getenv("TARGET_URL", "https://www.totalsportek.com/live-stream/fifa-tv-live/"),
-        "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/FIFA_logo_without_slogan.svg/1200px-FIFA_logo_without_slogan.svg.png",
-        "group": "Sports",
+        "name": "CloudBD TV",
+        "url": os.getenv("TARGET_URL", "https://stream.codecloud.bd/"),
+        "group": "Special",
     },
     # ── Add more channels here ──────────────────────────────────────────────
     # {
