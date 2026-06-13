@@ -1,32 +1,23 @@
 """
-IPTV Stream Extractor
-======================
-Extracts HLS (.m3u8) stream URLs from a source webpage and writes
-a valid M3U playlist to playlist/special.m3u.
+IPTV Stream Extractor — Playwright Edition
+==========================================
+Uses headless Chromium to render JavaScript SPAs and intercepts
+ALL network requests/responses to capture .m3u8 HLS stream URLs.
 
-Configuration
---------------
-Set these as GitHub Actions Variables (repo → Settings → Variables):
-  TARGET_URL     – The webpage containing the stream  (required)
-  STREAM_REFERER – Referer header to send              (optional, defaults to TARGET_URL origin)
-
-Or create a local .env file for testing:
-  TARGET_URL=https://example-stream-site.com/channel/fifa-tv
+Target: https://stream.codecloud.bd/
+No environment variables needed — URL is hardcoded below.
 """
 
-import os
 import re
 import sys
-import json
 import logging
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 
-import requests
-from bs4 import BeautifulSoup
+from playwright.sync_api import sync_playwright, Page
 
-# ── Logging ──────────────────────────────────────────────────────────────────
+# ── Logging ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
@@ -36,239 +27,237 @@ log = logging.getLogger(__name__)
 
 # ── Config ────────────────────────────────────────────────────────────────────
 
-# List of channels to extract. Each entry is a dict with:
-#   name        – display name in the M3U
-#   url         – page URL to scrape
-#   logo        – logo URL (optional)
-#   group       – EPG group-title (optional)
-#   referer     – override Referer header for this channel (optional)
-#
-# You can also control TARGET_URL via env var for a single-channel setup.
+BASE_URL = "https://stream.codecloud.bd/"
 
-CHANNELS = [
-    {
-        "name": "CloudBD TV",
-        "url": os.getenv("TARGET_URL", "https://stream.codecloud.bd/"),
-        "group": "Special",
-    },
-    # ── Add more channels here ──────────────────────────────────────────────
-    # {
-    #     "name": "beIN Sports 1",
-    #     "url": "https://example.com/bein-sports-1",
-    #     "logo": "https://example.com/bein.png",
-    #     "group": "Sports",
-    # },
+# Add individual channel watch pages here if you know them.
+# The script will ALSO auto-discover channels from the main page.
+MANUAL_CHANNELS = [
+    # {"name": "FIFA TV",   "url": "https://stream.codecloud.bd/watch/fifa-tv"},
+    # {"name": "beIN 1",    "url": "https://stream.codecloud.bd/watch/bein-1"},
 ]
 
 OUTPUT_PATH = Path(__file__).parent.parent / "playlist" / "fifa_tv.m3u"
 
-HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/125.0.0.0 Safari/537.36"
-    ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "en-US,en;q=0.9",
-}
+# Regex to find m3u8 URLs in rendered HTML / JS
+M3U8_RE = re.compile(r'https?://[^\s\'"<>]+\.m3u8(?:[^\s\'"<>]*)?', re.I)
 
-# ── Regex patterns for HLS stream URLs ───────────────────────────────────────
-M3U8_PATTERNS = [
-    # Direct .m3u8 references
-    r'https?://[^\s\'"<>]+\.m3u8(?:[^\s\'"<>]*)?',
-    # src="..." or file:"..." patterns
-    r'(?:file|src|source)["\']?\s*[=:]\s*["\']?(https?://[^\s\'"<>]+\.m3u8[^\s\'"<>]*)',
-    # JSON-style "url":"..." patterns
-    r'"url"\s*:\s*"(https?://[^\s\'"<>]+\.m3u8[^\s\'"<>]*)"',
-    # jwplayer / videojs setup blocks
-    r'(?:jwplayer|videojs)[^{]*\{[^}]*["\']?(?:file|src)["\']?\s*[=:]\s*["\']?(https?://[^\s\'"<>]+\.m3u8[^\s\'"<>]*)',
+# Selectors to find channel card links on the listing page
+CHANNEL_LINK_SELECTORS = [
+    "a[href*='/watch/']",
+    "a[href*='/live/']",
+    "a[href*='/channel/']",
+    ".channel-card a",
+    ".channel-item a",
+    ".stream-card a",
+    "[class*='channel'] a",
+    "[class*='stream'] a",
+    "[class*='card'] a",
 ]
 
-# ── Session ───────────────────────────────────────────────────────────────────
+# ── Browser helpers ───────────────────────────────────────────────────────────
 
-def make_session() -> requests.Session:
-    session = requests.Session()
-    session.headers.update(HEADERS)
-    return session
-
-
-# ── Extraction strategies ─────────────────────────────────────────────────────
-
-def strategy_regex(html: str, base_url: str) -> list[str]:
-    """Scan raw HTML with regex patterns."""
-    found = []
-    for pattern in M3U8_PATTERNS:
-        matches = re.findall(pattern, html, re.IGNORECASE)
-        found.extend(matches)
-    return list(dict.fromkeys(found))  # deduplicate, preserve order
-
-
-def strategy_bs4_sources(html: str, base_url: str) -> list[str]:
-    """Look inside <video>, <source>, <iframe>, and script tags via BeautifulSoup."""
-    soup = BeautifulSoup(html, "lxml")
-    found = []
-
-    for tag in soup.find_all(["source", "video", "iframe"]):
-        for attr in ("src", "data-src", "data-stream", "data-url"):
-            val = tag.get(attr, "")
-            if val and ".m3u8" in val:
-                found.append(urljoin(base_url, val))
-
-    # Also scan <script> tag bodies
-    for script in soup.find_all("script"):
-        if script.string and ".m3u8" in script.string:
-            found.extend(strategy_regex(script.string, base_url))
-
-    return list(dict.fromkeys(found))
+def make_context(playwright):
+    browser = playwright.chromium.launch(
+        headless=True,
+        args=[
+            "--no-sandbox",
+            "--disable-setuid-sandbox",
+            "--disable-dev-shm-usage",
+            "--disable-gpu",
+        ],
+    )
+    context = browser.new_context(
+        user_agent=(
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/125.0.0.0 Safari/537.36"
+        ),
+        extra_http_headers={
+            "Referer":  BASE_URL,
+            "Origin":   BASE_URL.rstrip("/"),
+            "Accept-Language": "en-US,en;q=0.9",
+        },
+    )
+    return browser, context
 
 
-def strategy_json_blobs(html: str, base_url: str) -> list[str]:
-    """Try to parse embedded JSON blobs (jwplayer setup, Next.js __NEXT_DATA__, etc.)."""
-    found = []
+def collect_streams(page: Page, url: str, wait_ms: int = 20_000) -> list[str]:
+    """
+    Navigate to `url`, intercept every network request/response,
+    and return deduplicated .m3u8 URLs found in the network traffic
+    AND in the rendered HTML source.
+    """
+    found: list[str] = []
 
-    # __NEXT_DATA__
-    match = re.search(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', html, re.S)
-    if match:
-        try:
-            data = json.loads(match.group(1))
-            text = json.dumps(data)
-            found.extend(re.findall(r'https?://[^\s\'"<>]+\.m3u8[^\s\'"<>]*', text))
-        except json.JSONDecodeError:
-            pass
+    def on_request(req):
+        if ".m3u8" in req.url:
+            log.info("  → [REQ ] %s", req.url)
+            found.append(req.url)
 
-    # Generic JSON assignment: var playerConfig = {...}
-    for blob in re.findall(r'(?:playerConfig|setupData|jwConfig)\s*=\s*(\{.*?\})\s*;', html, re.S):
-        try:
-            data = json.loads(blob)
-            text = json.dumps(data)
-            found.extend(re.findall(r'https?://[^\s\'"<>]+\.m3u8[^\s\'"<>]*', text))
-        except json.JSONDecodeError:
-            pass
+    def on_response(resp):
+        if ".m3u8" in resp.url:
+            log.info("  → [RESP] %s", resp.url)
+            found.append(resp.url)
 
-    return list(dict.fromkeys(found))
-
-
-def strategy_iframe_follow(html: str, base_url: str, session: requests.Session) -> list[str]:
-    """Follow <iframe> embeds one level deep and re-scan."""
-    soup = BeautifulSoup(html, "lxml")
-    found = []
-    for iframe in soup.find_all("iframe", src=True):
-        iframe_url = urljoin(base_url, iframe["src"])
-        if not iframe_url.startswith("http"):
-            continue
-        log.info("  ↪ Following iframe: %s", iframe_url)
-        try:
-            r = session.get(iframe_url, timeout=15, headers={"Referer": base_url})
-            r.raise_for_status()
-            found.extend(strategy_regex(r.text, iframe_url))
-            found.extend(strategy_bs4_sources(r.text, iframe_url))
-        except Exception as exc:
-            log.warning("  iframe fetch failed: %s", exc)
-    return list(dict.fromkeys(found))
-
-
-# ── Main extraction orchestrator ──────────────────────────────────────────────
-
-def extract_streams(channel: dict, session: requests.Session) -> list[str]:
-    url = channel["url"]
-    referer = channel.get("referer") or os.getenv("STREAM_REFERER") or url
-    origin = f"{urlparse(url).scheme}://{urlparse(url).netloc}"
-
-    log.info("🔍 Fetching: %s", url)
-    session.headers.update({"Referer": referer, "Origin": origin})
+    page.on("request",  on_request)
+    page.on("response", on_response)
 
     try:
-        resp = session.get(url, timeout=20)
-        resp.raise_for_status()
-    except requests.RequestException as exc:
-        log.error("Failed to fetch %s — %s", url, exc)
-        return []
+        page.goto(url, wait_until="networkidle", timeout=wait_ms)
+    except Exception as exc:
+        log.warning("  ⚠ goto timeout/error (continuing anyway): %s", exc)
 
-    html = resp.text
-    streams: list[str] = []
+    # Extra wait — some players fire HLS requests 2–3 s after page load
+    try:
+        page.wait_for_timeout(4000)
+    except Exception:
+        pass
 
-    # Run strategies in order; stop as soon as we find something
-    for strategy in [strategy_regex, strategy_bs4_sources, strategy_json_blobs]:
-        results = strategy(html, url)
-        streams.extend(results)
-        if results:
-            log.info("  ✅ Strategy '%s' found %d URL(s)", strategy.__name__, len(results))
+    # Also scan the fully-rendered DOM for m3u8 URLs
+    try:
+        html = page.content()
+        for m in M3U8_RE.findall(html):
+            if m not in found:
+                log.info("  → [HTML] %s", m)
+                found.append(m)
+    except Exception:
+        pass
 
-    # Follow iframes only if nothing found yet
-    if not streams:
-        log.info("  🔗 Trying iframe follow strategy…")
-        streams.extend(strategy_iframe_follow(html, url, session))
-
-    # Deduplicate
-    streams = list(dict.fromkeys(streams))
-
-    if streams:
-        log.info("  🎯 %d stream(s) found for '%s'", len(streams), channel["name"])
-        for s in streams:
-            log.info("     → %s", s)
-    else:
-        log.warning("  ⚠️  No streams found for '%s'", channel["name"])
-
-    return streams
+    page.remove_listener("request",  on_request)
+    page.remove_listener("response", on_response)
+    return list(dict.fromkeys(found))   # preserve order, remove dups
 
 
-# ── M3U writer ────────────────────────────────────────────────────────────────
-
-def build_m3u(entries: list[dict]) -> str:
+def discover_channels(page: Page) -> list[dict]:
     """
-    entries: list of dicts with keys: name, url, logo, group, stream_url
+    Scrape the main listing page for channel card links.
+    Returns a list of {"name": ..., "url": ...} dicts.
     """
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
-    lines = [
-        "#EXTM3U",
-        f"# Auto-updated: {now}",
-        f"# Total channels: {len(entries)}",
-        "",
-    ]
+    channels = []
+    seen_urls: set[str] = set()
 
-    for entry in entries:
-        stream_url = entry.get("stream_url", "")
-        if not stream_url:
+    for sel in CHANNEL_LINK_SELECTORS:
+        try:
+            for el in page.query_selector_all(sel):
+                href = el.get_attribute("href") or ""
+                if not href:
+                    continue
+                full_url = urljoin(BASE_URL, href)
+                if full_url in seen_urls:
+                    continue
+                seen_urls.add(full_url)
+
+                # Best-effort name extraction
+                try:
+                    name = (
+                        el.inner_text().strip().split("\n")[0]
+                        or el.get_attribute("title")
+                        or el.get_attribute("aria-label")
+                        or "Channel"
+                    )
+                except Exception:
+                    name = "Channel"
+
+                channels.append({"name": name.strip() or "Channel", "url": full_url})
+        except Exception:
             continue
 
-        logo  = entry.get("logo", "")
-        group = entry.get("group", "IPTV")
-        name  = entry.get("name", "Channel")
+    return channels
 
-        logo_part  = f' tvg-logo="{logo}"'  if logo  else ""
-        group_part = f' group-title="{group}"' if group else ""
 
-        lines.append(f'#EXTINF:-1{logo_part}{group_part},{name}')
-        lines.append(stream_url)
+# ── M3U builder ───────────────────────────────────────────────────────────────
+
+def build_m3u(entries: list[dict]) -> str:
+    ts = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
+    lines = [
+        "#EXTM3U",
+        f"# Auto-updated : {ts}",
+        f"# Total channels: {len(entries)}",
+        f"# Source        : {BASE_URL}",
+        "",
+    ]
+    for e in entries:
+        stream = e.get("stream_url", "")
+        if not stream:
+            continue
+        name   = e.get("name",  "Channel")
+        logo   = e.get("logo",  "")
+        group  = e.get("group", "BD TV")
+        lines.append(
+            f'#EXTINF:-1'
+            f'{f" tvg-logo=\"{logo}\"" if logo else ""}'
+            f' group-title="{group}"'
+            f',{name}'
+        )
+        lines.append(stream)
         lines.append("")
-
     return "\n".join(lines)
 
 
-# ── Entry point ───────────────────────────────────────────────────────────────
+# ── Main ──────────────────────────────────────────────────────────────────────
 
 def main():
-    session = make_session()
-    entries = []
+    results: list[dict] = []
 
-    for channel in CHANNELS:
-        streams = extract_streams(channel, session)
-        if streams:
-            # Use the first (most likely) stream URL
-            entries.append({**channel, "stream_url": streams[0]})
-        else:
-            log.warning("Skipping '%s' — no stream URL extracted.", channel["name"])
+    with sync_playwright() as p:
+        browser, ctx = make_context(p)
 
-    if not entries:
-        log.error("❌ No streams extracted. Playlist will not be updated.")
+        # ── Step 1: Load main page ────────────────────────────────────────────
+        log.info("🌐 Loading main page: %s", BASE_URL)
+        main_page = ctx.new_page()
+        main_streams = collect_streams(main_page, BASE_URL, wait_ms=30_000)
+
+        if main_streams:
+            log.info("✅ Found %d stream(s) on main page", len(main_streams))
+            for s in main_streams:
+                results.append({"name": "CodeCloudBD Live", "group": "BD TV", "stream_url": s})
+
+        # ── Step 2: Discover channel links ────────────────────────────────────
+        auto_channels = discover_channels(main_page)
+        log.info("🔎 Auto-discovered %d channel link(s)", len(auto_channels))
+        main_page.close()
+
+        # Merge manual + auto channels (deduplicate by URL)
+        all_channels: list[dict] = list(MANUAL_CHANNELS)
+        seen_ch_urls  = {c["url"] for c in all_channels}
+        for ch in auto_channels:
+            if ch["url"] not in seen_ch_urls:
+                all_channels.append(ch)
+                seen_ch_urls.add(ch["url"])
+
+        # ── Step 3: Visit each channel page ───────────────────────────────────
+        for ch in all_channels[:30]:   # cap at 30 channels per run
+            log.info("📺 [%s] → %s", ch["name"], ch["url"])
+            pg = ctx.new_page()
+            streams = collect_streams(pg, ch["url"], wait_ms=20_000)
+            pg.close()
+
+            if streams:
+                log.info("   ✅ stream: %s", streams[0])
+                results.append({**ch, "stream_url": streams[0]})
+            else:
+                log.warning("   ⚠ no stream found")
+
+        browser.close()
+
+    # ── Deduplicate results by stream URL ─────────────────────────────────────
+    seen_streams: set[str] = set()
+    unique: list[dict] = []
+    for r in results:
+        s = r.get("stream_url", "")
+        if s and s not in seen_streams:
+            seen_streams.add(s)
+            unique.append(r)
+
+    if not unique:
+        log.error("❌ No streams found. Playlist NOT updated.")
         sys.exit(1)
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-    playlist = build_m3u(entries)
-    OUTPUT_PATH.write_text(playlist, encoding="utf-8")
-
-    log.info("✅ Playlist written → %s  (%d channel(s))", OUTPUT_PATH, len(entries))
+    OUTPUT_PATH.write_text(build_m3u(unique), encoding="utf-8")
+    log.info("✅ Playlist saved → %s  (%d channel(s))", OUTPUT_PATH, len(unique))
 
 
 if __name__ == "__main__":
     main()
+  
