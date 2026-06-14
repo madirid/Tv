@@ -1,7 +1,6 @@
 https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/1080p-vtt/index.m3u8
-http://rgkkw.live:80/live/1Aoen7elp5/IgMJ60tmAa/130714.ts
-https://tvsen5.aynaott.com/PtvSports/index.m3u8
-http://103.59.176.72:8083/live1/tracks-v1a1/mono.m3u8?token=123
+https://go.skym3u.top/xyyq.m3u
+https://go.skym3u.top/mrk3.m3u
 https://1nyaler.streamhostingcdn.top/stream/23/index.m3u8
 https://1nyaler.streamhostingcdn.top/stream/32/index.m3u8
 https://mahdiridoy.github.io/codecloudebd/playlist/fifa_tv.m3u
